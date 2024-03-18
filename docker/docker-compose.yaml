@@ -1,0 +1,61 @@
+version: '2'
+
+volumes:
+  datomic_data:
+    driver: local
+  datomic_log:
+    driver: local
+  pgdata:
+    driver: local
+
+services:
+
+  datomic:
+    build:
+      context: .
+      dockerfile: datomic/images/transactor/Dockerfile
+      args:
+        DB_NAME: "heroes"
+        STORAGE_ADMIN_PASSWORD: "$STORAGE_ADMIN_PASSWORD"
+        STORAGE_DATOMIC_PASSWORD: "$STORAGE_DATOMIC_PASSWORD"
+    volumes:
+      - "datomic_data:/var/datomic/data"
+      - "datomic_log:/var/datomic/log"
+    ports:
+      - "4334:4334"
+      - "4335:4335"
+      - "4336:4336"
+      - "9999:9999"
+
+  postgres:
+    image: postgres
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 5432:5432
+
+  console:
+    build:
+      context: .
+      dockerfile: datomic/images/console/Dockerfile
+      args:
+        STORAGE_DATOMIC_PASSWORD: "$STORAGE_DATOMIC_PASSWORD"
+    links:
+      - datomic
+    command: ["dev", "datomic:dev://datomic:4334/heroes?password=$STORAGE_DATOMIC_PASSWORD"]
+    ports:
+      - "9000:9000"
+
+  api:
+    build:
+      context: ./..
+      dockerfile: docker/api/Dockerfile
+      args:
+        datomic-secret-password: "$STORAGE_DATOMIC_PASSWORD"
+    links:
+      - datomic
+    ports:
+      - "8080:8890"

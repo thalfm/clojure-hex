@@ -1,0 +1,22 @@
+{:objects
+ {:Hero
+  {:description "A hero"
+   :fields
+   {:id        {:type (non-null ID)}
+    :name      {:type (non-null String)}
+    :biography {:type (non-null :Biography)}}}
+
+  :Biography
+  {:description "A hero biography"
+   :fields
+   {:id        {:type (non-null ID)}
+    :fullName {:type (non-null String)}
+    :alias     {:type (non-null (list :String))}}}
+
+  :Query
+  {:fields
+   {:heroById
+    {:type        :Hero
+     :description "Access a Hero by its unique id, if it exists."
+     :args
+     {:id {:type ID}}}}}}}
