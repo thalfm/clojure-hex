@@ -10,7 +10,7 @@
 
 (defrecord DatabaseDatomic
   [db-uri]
-  protocols/RegisterRepositories
+  protocols/IRepository
 
   (register [this]
     (register-repositories)

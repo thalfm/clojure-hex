@@ -31,7 +31,7 @@
 
 (defmethod hero-repository/create! :datomic
   [database hero]
-  (println (d/transact database [(schema/hero->schema hero)])))
+  (d/transact database [(schema/hero->schema hero)]))
 
 (defmethod hero-repository/update! :datomic
   [database id hero]

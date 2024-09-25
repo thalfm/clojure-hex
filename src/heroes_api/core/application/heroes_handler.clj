@@ -1,10 +1,14 @@
 (ns heroes-api.core.application.heroes-handler
-  (:require [heroes-api.core.domain.hero-repository :as repo]
+  (:require [heroes-api.core.application.in :as in]
+            [heroes-api.core.domain.hero-repository :as repo]
             [heroes-api.core.domain.hero-model :as model.hero]
-            [heroes-api.core.domain.biography-model :as model.biography]))
+            [heroes-api.core.domain.biography-model :as model.biography]
+            [schema.core :as s]
+            [heroes-api.components.protocols :as p]))
 
-(defn create!
-  [store {:keys [name full-name alias group-affiliation relatives]}]
+(s/defn create!
+  [store :- p/Repository
+   {:keys [name full-name alias group-affiliation relatives]} :- in/HeroIn]
   (let [biography (model.biography/new-biography full-name alias)
         hero (model.hero/new-hero name biography group-affiliation relatives)]
     (repo/create! store hero)

@@ -1,5 +1,7 @@
 (ns heroes-api.infrastructure.persistence.in-memory.hero-repository
-  (:require [heroes-api.core.domain.hero-repository :as hero-repository]))
+  (:require [heroes-api.core.domain.hero-repository :as hero-repository]
+            [heroes-api.core.domain.hero-model :as hero-model]
+            [schema.core :as s]))
 
 (defmethod hero-repository/all! :in-memory
   [database _]
@@ -9,8 +11,9 @@
   [database id]
   (first (filter #(= (str (:uuid %)) id) @database)))
 
-(defmethod hero-repository/create! :in-memory
-  [database hero]
+(s/defmethod hero-repository/create! :in-memory
+  [database :- s/atom
+   hero :- hero-model/Hero]
   (swap! database conj hero))
 
 (defmethod hero-repository/update! :in-memory

@@ -6,7 +6,7 @@
   (require '[heroes-api.infrastructure.persistence.in-memory.hero-repository]))
 
 (defrecord DatabaseInMemory []
-  protocols/RegisterRepositories
+  protocols/IRepository
   (register [this]
     (register-repositories)
     this)

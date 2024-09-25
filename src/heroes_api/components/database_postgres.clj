@@ -11,7 +11,7 @@
 
 (defrecord DatabasePostgres
   [config]
-  protocols/RegisterRepositories
+  protocols/IRepository
 
   (register [this]
     (register-repositories)

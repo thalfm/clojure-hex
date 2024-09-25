@@ -19,7 +19,8 @@
                  [prismatic/schema "1.4.1"]
                  [com.walmartlabs/lacinia "1.2.1"]
                  [com.walmartlabs/lacinia-pedestal "1.1"]
-                 [io.aviso/logging "1.0"]]
+                 [io.aviso/logging "1.0"]
+                 [prismatic/schema "1.4.1"]]
   :repl-options {:init-ns heroes-api.main}
   :main ^:skip-aot heroes-api.main
   :target-path "target/%s"

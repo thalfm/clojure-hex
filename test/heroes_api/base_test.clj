@@ -5,8 +5,11 @@
             [clojure.data.json :as json]
             [io.pedestal.http :as http]
             [io.pedestal.http.route :as route]
+            [schema.test]
             [heroes-api.ui.rest.hero-crud-controller :as rest])
   (:use [clojure.pprint]))
+
+(use-fixtures :once schema.test/validate-schemas)
 
 (def system (components/start! {:environment :test}))
 
@@ -19,7 +22,9 @@
 (def service (service-fn system))
 
 (def url-for
-  (route/url-for-routes rest/endpoints))
+  (-> rest/endpoints
+      route/expand-routes
+      route/url-for-routes))
 
 (defn request
   [verb keyword-path & {:keys [body path-params]}]

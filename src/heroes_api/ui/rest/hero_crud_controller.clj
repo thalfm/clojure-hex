@@ -1,8 +1,7 @@
 (ns heroes-api.ui.rest.hero-crud-controller
   (:require [heroes-api.core.application.heroes-handler :as application.heroes-handler]
-            [heroes-api.ui.rest.hero-in :as in]
+            [heroes-api.ui.rest.hero-adapter-in :as in]
             [heroes-api.ui.rest.hero-out :as out]
-            [io.pedestal.http.route :as route]
             [io.pedestal.http.body-params :as body-params]))
 
 (defn create!

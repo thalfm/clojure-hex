@@ -1,4 +1,4 @@
-version: '2'
+version: '3.4'
 
 volumes:
   datomic_data:
@@ -14,6 +14,7 @@ services:
     build:
       context: .
       dockerfile: datomic/images/transactor/Dockerfile
+      target: TRANSACTOR
       args:
         DB_NAME: "heroes"
         STORAGE_ADMIN_PASSWORD: "$STORAGE_ADMIN_PASSWORD"
@@ -40,12 +41,13 @@ services:
   console:
     build:
       context: .
-      dockerfile: datomic/images/console/Dockerfile
+      dockerfile: datomic/images/transactor/Dockerfile
+      target: CONSOLE
       args:
         STORAGE_DATOMIC_PASSWORD: "$STORAGE_DATOMIC_PASSWORD"
     links:
       - datomic
-    command: ["dev", "datomic:dev://datomic:4334/heroes?password=$STORAGE_DATOMIC_PASSWORD"]
+    command: ["dev", "datomic:dev://datomic:4334/?password=$STORAGE_DATOMIC_PASSWORD"]
     ports:
       - "9000:9000"
 
